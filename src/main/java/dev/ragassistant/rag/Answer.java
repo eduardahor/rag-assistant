@@ -1,0 +1,5 @@
+package dev.ragassistant.rag;
+
+import java.util.List;
+
+public record Answer(String answer, List<Source> sources) {}

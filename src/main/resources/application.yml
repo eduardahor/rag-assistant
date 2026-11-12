@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: rag-assistant
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/rag}
+    username: ${SPRING_DATASOURCE_USERNAME:rag}
+    password: ${SPRING_DATASOURCE_PASSWORD:rag}
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  http:
+    client:
+      connect-timeout: 10s
+      read-timeout: 60s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+rag:
+  llm:
+    base-url: ${LLM_BASE_URL:https://api.openai.com/v1}
+    api-key: ${LLM_API_KEY:${OPENAI_API_KEY:}}
+    model: ${LLM_MODEL:gpt-4o-mini}
+    temperature: ${LLM_TEMPERATURE:0.1}
+  embedding:
+    base-url: ${EMBEDDING_BASE_URL:https://api.openai.com/v1}
+    api-key: ${EMBEDDING_API_KEY:${OPENAI_API_KEY:}}
+    model: ${EMBEDDING_MODEL:text-embedding-3-small}
+    # Precisa ser igual à dimensão da coluna vector(...) em V1__init.sql
+    dimensions: 1536
+    batch-size: 64
+  chunking:
+    max-chars: 1000
+    overlap-chars: 150
+  retrieval:
+    top-k: 5
+    min-score: 0.2
